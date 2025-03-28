@@ -13,9 +13,21 @@ export default function TabLayout() {
           borderTopColor: '#e5e5e5',
           height: 60,
           paddingBottom: 8,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: -2,
+          },
+          shadowOpacity: 0.1,
+          shadowRadius: 3.84,
+          elevation: 5,
         },
         tabBarActiveTintColor: '#2F9E44',
         tabBarInactiveTintColor: '#666666',
+        tabBarLabelStyle: {
+          fontFamily: 'Montserrat-Medium',
+          fontSize: 12,
+        },
       }}>
       <Tabs.Screen
         name="index"
@@ -50,6 +62,12 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="camera"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

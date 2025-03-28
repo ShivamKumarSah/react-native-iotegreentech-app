@@ -6,9 +6,9 @@ import { WeatherIcon } from '@/components/WeatherIcon';
 // Mock weather data (in a real app, this would come from a weather API)
 const weatherData = {
   current: {
-    temp: 22,
-    humidity: 65,
-    windSpeed: 12,
+    temp: 30,
+    humidity: 15,
+    windSpeed: 4,
     condition: 'Partly Cloudy',
     icon: CloudSun,
   },

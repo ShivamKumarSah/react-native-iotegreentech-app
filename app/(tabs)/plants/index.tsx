@@ -19,7 +19,7 @@ const plants = [
   {
     id: '2',
     name: 'Snake Plant',
-    image: 'https://images.unsplash.com/photo-1593691509543-c55fb32e8a76?auto=format&fit=crop&w=800&q=80',
+    image: 'https://plus.unsplash.com/premium_photo-1673969608395-9281e5e4395f?q=80&w=708&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     health: 'Good',
     healthScore: 85,
     lastWatered: '5 days ago',
@@ -32,7 +32,7 @@ const plants = [
   {
     id: '3',
     name: 'Peace Lily',
-    image: 'https://images.unsplash.com/photo-1593691509544-0635b56ad791?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1616694547693-b0f829a6cf30?q=80&w=890&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     health: 'Needs Attention',
     healthScore: 70,
     lastWatered: '7 days ago',

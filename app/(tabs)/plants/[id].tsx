@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { ArrowLeft, Droplets, Thermometer, Sun, Wind, Activity } from 'lucide-react-native';
@@ -66,7 +67,7 @@ export default function PlantDetails() {
 
       <View style={styles.content}>
         <Text style={styles.plantName}>{plant.name}</Text>
-        
+
         <View style={styles.healthSection}>
           <View style={styles.healthScore}>
             <Activity size={24} color="#2F9E44" />
