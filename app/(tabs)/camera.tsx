@@ -7,8 +7,9 @@ import {
   View,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 const configuration = {
   apiKey: 'AIzaSyBrn-eR0EK78eanlKNN8771AT0N9wYfegg',
@@ -69,7 +70,10 @@ export default function App() {
         const photo = await cameraRef.current.takePictureAsync({ base64: true, quality: 0.5 });
         setCapturedImage(photo.uri);
         setLoading(true);
-        const geminiResponse = await sendToGemini(photo.base64, 'You are a professional agriculture specialist. I will provide you with an image of a plant. Your task is to identify the plant and its scientific name. If you are unsure, mention that you are not certain but suggest the most likely plant species. If the plant is healthy, describe its benefits and common uses. If the plant appears unhealthy, diagnose the issue, identify any diseases, and provide a detailed professional recommendation for treatment, including possible cures and preventive measures. If the image is not of a plant, respond by saying that you are an AI plant expert and can only assist with plant-related inquiries. important: strictly do not use * to stylize the text.');
+        const geminiResponse = await sendToGemini(
+          photo.base64,
+          'You are a professional agriculture specialist. I will provide you with an image of a plant. Your task is to identify the plant and its scientific name. If you are unsure, mention that you are not certain but suggest the most likely plant species. If the plant is healthy, describe its benefits and common uses. If the plant appears unhealthy, diagnose the issue, identify any diseases, and provide a detailed professional recommendation for treatment, including possible cures and preventive measures. If the image is not of a plant, respond by saying that you are an AI plant expert and can only assist with plant-related inquiries.Important: strictly not use * to stylize the text.'
+        );
         setResponseText(geminiResponse);
       } catch (error) {
         setResponseText('Error capturing the image');
@@ -86,27 +90,28 @@ export default function App() {
 
   if (capturedImage) {
     return (
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <Image source={{ uri: capturedImage }} style={styles.previewImage} />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <Image source={{ uri: capturedImage }} style={styles.previewImage} />
+          </View>
           {loading ? (
-            <ActivityIndicator size="large" color="#2F9E44" />
+            <ActivityIndicator size="large" color="#2F9E44" style={styles.loadingIndicator} />
           ) : (
             <Text style={styles.responseText}>{responseText}</Text>
           )}
+          <TouchableOpacity style={styles.retakeButton} onPress={handleRetake}>
+            <Text style={styles.buttonText}>Retake</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.retakeButton} onPress={handleRetake}>
-          <Text style={styles.text}>Retake</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     );
   }
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} ref={cameraRef}>
-        <TouchableOpacity style={styles.captureButton} onPress={handleCapture} />
-      </CameraView>
+      <CameraView style={styles.camera} ref={cameraRef} />
+      <TouchableOpacity style={styles.captureButton} onPress={handleCapture} />
     </View>
   );
 }
@@ -114,10 +119,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     alignItems: 'center',
     padding: 20,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   message: {
     textAlign: 'center',
@@ -127,30 +136,29 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
     width: '100%',
-    borderRadius: 20,
-    overflow: 'hidden',
   },
   captureButton: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
     width: 70,
     height: 70,
     borderRadius: 35,
     backgroundColor: '#2F9E44',
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
-    borderWidth: 5,
-    borderColor: '#FFF',
+    borderWidth: 4,
+    borderColor: '#fff',
   },
   card: {
-    backgroundColor: '#FFF',
-    borderRadius: 15,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
     width: '90%',
-    alignItems: 'center',
+    minHeight: 300,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    padding: 10,
+    marginBottom: 20,
   },
   previewImage: {
     width: '100%',
@@ -158,21 +166,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   responseText: {
-    color: '#333',
+    width: '90%',
+    color: '#000',
     fontSize: 16,
-    padding: 10,
     textAlign: 'left',
-    width: '100%',
+    marginBottom: 20,
   },
   retakeButton: {
-    marginTop: 20,
-    backgroundColor: '#2F9E44',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
+    backgroundColor: '#FF3B30',
+    padding: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: '90%',
   },
-  text: {
+  buttonText: {
     fontSize: 18,
     color: '#fff',
+    fontWeight: 'bold',
+  },
+  loadingIndicator: {
+    marginBottom: 20,
   },
 });
