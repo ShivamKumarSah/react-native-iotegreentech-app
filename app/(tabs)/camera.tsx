@@ -18,7 +18,6 @@ const configuration = {
 
 async function sendToGemini(base64Image: string, prompt: string): Promise<string> {
   try {
-    // Remove the base64 header if present.
     const cleanBase64Image = base64Image.replace(/^data:image\/\w+;base64,/, '');
     const response = await fetch(`${configuration.endpoint}?key=${configuration.apiKey}`, {
       method: 'POST',
@@ -45,7 +44,6 @@ async function sendToGemini(base64Image: string, prompt: string): Promise<string
 }
 
 export default function App() {
-  const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [responseText, setResponseText] = useState<string>('');
@@ -53,12 +51,10 @@ export default function App() {
   const cameraRef = useRef<any>(null);
 
   if (!permission) {
-    // Permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Permissions have not been granted.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
@@ -67,17 +63,12 @@ export default function App() {
     );
   }
 
-  function toggleCameraFacing() {
-    setFacing((current) => (current === 'back' ? 'front' : 'back'));
-  }
-
   async function handleCapture() {
     if (cameraRef.current) {
       try {
         const photo = await cameraRef.current.takePictureAsync({ base64: true, quality: 0.5 });
         setCapturedImage(photo.uri);
         setLoading(true);
-        // Send the captured image along with the predefined prompt.
         const geminiResponse = await sendToGemini(photo.base64, 'You are a professional agriculture specialist. I will provide you with an image of a plant. Your task is to identify the plant and its scientific name. If you are unsure, mention that you are not certain but suggest the most likely plant species. If the plant is healthy, describe its benefits and common uses. If the plant appears unhealthy, diagnose the issue, identify any diseases, and provide a detailed professional recommendation for treatment, including possible cures and preventive measures. If the image is not of a plant, respond by saying that you are an AI plant expert and can only assist with plant-related inquiries. important: strictly do not use * to stylize the text.');
         setResponseText(geminiResponse);
       } catch (error) {
@@ -93,7 +84,6 @@ export default function App() {
     setResponseText('');
   }
 
-  // If an image was captured, show its preview and the Gemini API response.
   if (capturedImage) {
     return (
       <View style={styles.container}>
@@ -110,14 +100,10 @@ export default function App() {
     );
   }
 
-  // Otherwise, show the camera view with flip and capture buttons.
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+      <CameraView style={styles.camera} ref={cameraRef}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={handleCapture}>
             <Text style={styles.text}>Capture</Text>
           </TouchableOpacity>
@@ -146,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     margin: 64,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   button: {
     alignSelf: 'flex-end',
