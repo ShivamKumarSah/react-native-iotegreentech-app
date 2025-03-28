@@ -87,13 +87,15 @@ export default function App() {
   if (capturedImage) {
     return (
       <View style={styles.container}>
-        <Image source={{ uri: capturedImage }} style={styles.previewImage} />
-        {loading ? (
-          <ActivityIndicator size="large" color="#2F9E44" />
-        ) : (
-          <Text style={styles.responseText}>{responseText}</Text>
-        )}
-        <TouchableOpacity style={styles.button} onPress={handleRetake}>
+        <View style={styles.card}>
+          <Image source={{ uri: capturedImage }} style={styles.previewImage} />
+          {loading ? (
+            <ActivityIndicator size="large" color="#2F9E44" />
+          ) : (
+            <Text style={styles.responseText}>{responseText}</Text>
+          )}
+        </View>
+        <TouchableOpacity style={styles.retakeButton} onPress={handleRetake}>
           <Text style={styles.text}>Retake</Text>
         </TouchableOpacity>
       </View>
@@ -103,11 +105,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <CameraView style={styles.camera} ref={cameraRef}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleCapture}>
-            <Text style={styles.text}>Capture</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.captureButton} onPress={handleCapture} />
       </CameraView>
     </View>
   );
@@ -116,8 +114,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#FFF',
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   message: {
     textAlign: 'center',
@@ -126,33 +126,53 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    width: '100%',
+    borderRadius: 20,
+    overflow: 'hidden',
   },
-  buttonContainer: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    margin: 64,
-    justifyContent: 'center',
-  },
-  button: {
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+  captureButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     backgroundColor: '#2F9E44',
-    padding: 12,
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
+    borderWidth: 5,
+    borderColor: '#FFF',
+  },
+  card: {
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    width: '90%',
+    alignItems: 'center',
+  },
+  previewImage: {
+    width: '100%',
+    height: 300,
+    borderRadius: 10,
+  },
+  responseText: {
+    color: '#333',
+    fontSize: 16,
+    padding: 10,
+    textAlign: 'left',
+    width: '100%',
+  },
+  retakeButton: {
+    marginTop: 20,
+    backgroundColor: '#2F9E44',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
     borderRadius: 8,
   },
   text: {
     fontSize: 18,
     color: '#fff',
-  },
-  previewImage: {
-    flex: 1,
-    width: '100%',
-  },
-  responseText: {
-    color: '#fff',
-    fontSize: 16,
-    padding: 10,
-    textAlign: 'center',
   },
 });
